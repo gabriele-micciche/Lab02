@@ -1,16 +1,62 @@
+import csv
+
 def carica_da_file(file_path):
     """Carica le foto dal file, creando un nuovo anno ogni volta che compare per la prima volta"""
-    # TODO
+    try:
+        album = {}
+        with open(file_path, 'r', encoding="utf-8") as filein:
+            lettore = csv.reader(filein)
+            header = next(lettore, None)
+            album = {}
+            for riga in  lettore:
+                codice = riga[0]
+                titolo = riga[1]
+                autore = riga[2]
+                mese = int(riga[3])
+                anno = riga[4]
+
+                if anno not in album:
+                    album[anno] = {}
+                album[anno][codice] = [titolo, autore, mese]
+        return album
+
+    except FileNotFoundError:
+        print("file non esiste")
+        return None
 
 
 def aggiungi_foto(album, codice, titolo, autore, mese, anno, file_path):
     """Aggiunge una foto all'album, creando l'anno al volo se non è ancora presente"""
-    # TODO
+    mese = int(mese)
+    if mese > 12 or mese < 1:
+        return None
+
+    for anno_esistente in album:
+        if codice in album[anno_esistente]:
+            return None
+
+    try:
+        with open(file_path, 'a', encoding="utf-8") as fileout:
+            nuovariga = (f"{codice},{titolo},{autore},{mese},{anno}")
+            fileout.write(nuovariga)
+    except FileNotFoundError:
+        print("file non esiste")
+
+    if album not in album:
+        album[anno] = {}
+
+    foto_aggiunta = [titolo, autore, mese]
+    album[anno][codice] = foto_aggiunta
+    return foto_aggiunta
 
 
 def cerca_foto(album, codice):
     """Cerca una foto nell'album dato il codice"""
-    # TODO
+    for x in album:
+        if x[codice] in album:
+            return album[codice]
+        else:
+            return None
 
 
 def elenco_foto_anno_per_titolo(album, anno):
