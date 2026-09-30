@@ -13,7 +13,7 @@ def carica_da_file(file_path):
                 titolo = riga[1]
                 autore = riga[2]
                 mese = int(riga[3])
-                anno = riga[4]
+                anno = int(riga[4])
 
                 if anno not in album:
                     album[anno] = {}
