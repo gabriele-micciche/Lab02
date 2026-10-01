@@ -65,8 +65,13 @@ def elenco_foto_anno_per_titolo(album, anno):
     """Ordina i titoli delle foto di un dato anno in ordine alfabetico"""
     if anno not in album:
         return None
-    titoli = [dati[0] for dati in album[anno].values()]
-    return sorted(titoli)
+    titoli = []
+    for info_foto in album[anno].values():
+        titolo = info_foto[0]
+        titoli.append(titolo)
+
+    titoli.sort()  # ordina direttamente la lista
+    return titoli
 
 
 def main():
